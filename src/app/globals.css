@@ -1,8 +1,13 @@
 @import "tailwindcss";
+@plugin './hero.ts';
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #FAFAFA;
+  --foreground: #18181B;
+  --success: #45D483;
+  --error: #F31260;
+  --warning: #F5A524;
+  --primary: #006FEE;
 }
 
 @theme inline {
