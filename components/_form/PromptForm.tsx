@@ -1,52 +1,53 @@
 "use client";
-import { Controller, useForm } from "react-hook-form";
-import { Form, Input, Button } from "@heroui/react";
+import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { InputSchema } from "@/lib/schema";
-import { Send } from "lucide-react";
+import { ChatTextarea } from '@/components/_inputs/TextInput'
+
+type FormValues = {
+  prompt: string;
+};
 
 const PromptForm = () => {
-  const { handleSubmit, control } = useForm({
+  const { handleSubmit, control, reset } = useForm<FormValues>({
     defaultValues: {
       prompt: "",
     },
     resolver: zodResolver(InputSchema),
   });
 
-  const submitHandler = () => {};
+  const submitHandler = (data: FormValues) => {
+    console.log("Submitted prompt:", data.prompt);
+    reset();
+  };
 
   return (
-    <Form onSubmit={handleSubmit(submitHandler)} className="">
+    <form
+      onSubmit={handleSubmit(submitHandler)}
+      className="relative mx-auto flex w-full max-w-2xl items-end gap-6"
+    >
       <Controller
-        control={control}
         name="prompt"
-        render={({
-          field: { name, value, onChange, ref },
-          fieldState: { invalid, error },
-        }) => (
-          <Input
-            ref={ref}
-            label="Tell me about your business idea"
-            labelPlacement="inside"
-            isRequired
-            validationBehavior="aria"
-            value={value}
-            name={name}
-            errorMessage={error?.message}
-            isInvalid={invalid}
-            onChange={onChange}
+        control={control}
+        render={({ field }) => (
+          <ChatTextarea
+            value={field.value}
+            onChange={field.onChange}
+            placeholder="Roast my idea…"
+            submitOnEnter
+            maxHeight={260}
+            minRows={1}
+            label="Prompt input"
+            showCounter
+            maxLengthHint={2000}
+            // Call form submit manually when ChatTextarea submits
+            onSubmit={async () => {
+              await handleSubmit(submitHandler)();
+            }}
           />
         )}
       />
-      <Button type="submit">
-        <Send
-          size={24}
-          className="text-foreground"
-          strokeWidth={3}
-          absoluteStrokeWidth
-        />
-      </Button>
-    </Form>
+    </form>
   );
 };
 
