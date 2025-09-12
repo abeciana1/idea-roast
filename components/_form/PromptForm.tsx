@@ -2,21 +2,26 @@
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { InputSchema } from "@/lib/schema";
-import { ChatTextarea } from '@/components/_inputs/TextInput'
+import { ChatTextarea } from "@/components/_inputs/TextInput";
 
 type FormValues = {
   prompt: string;
 };
 
 const PromptForm = () => {
-  const { handleSubmit, control, reset } = useForm<FormValues>({
+  const {
+    handleSubmit,
+    control,
+    reset,
+    formState: { isSubmitting, errors },
+  } = useForm<FormValues>({
     defaultValues: {
       prompt: "",
     },
     resolver: zodResolver(InputSchema),
   });
 
-  const submitHandler = (data: FormValues) => {
+  const submitHandler = async (data: FormValues) => {
     console.log("Submitted prompt:", data.prompt);
     reset();
   };
@@ -39,7 +44,8 @@ const PromptForm = () => {
             minRows={1}
             label="Prompt input"
             showCounter
-            maxLengthHint={2000}
+            maxLengthHint={5000}
+            disabled={isSubmitting}
             // Call form submit manually when ChatTextarea submits
             onSubmit={async () => {
               await handleSubmit(submitHandler)();
@@ -47,6 +53,11 @@ const PromptForm = () => {
           />
         )}
       />
+      {errors?.prompt && (
+        <p className="absolute -bottom-6 left-0 text-sm text-red-600">
+          {String(errors.prompt.message)}
+        </p>
+      )}
     </form>
   );
 };
