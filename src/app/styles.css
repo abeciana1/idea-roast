@@ -1,0 +1,72 @@
+@import "tailwindcss";
+
+html {
+  scroll-behavior: smooth;
+}
+
+@theme {
+  --color-background: #ffffff;
+  --color-foreground: #2a2a2a;
+  --color-danger: #ef626c;
+  --color-success: #5da271;
+  --color-warning: #e6af2e;
+  --color-pillGrey: #f5f5f5;
+  --color-darkGrey: #666666;
+  --color-blue: #629fd0;
+  --color-jasmine: #f4ce7c;
+
+  --spacing: 0.5rem; /* 8px */
+
+  /* Define custom spacing values */
+  --spacing-0: calc(var(--spacing) * 0); /* 0px */
+  --spacing-1: calc(var(--spacing) * 0.5); /* 4px */
+  --spacing-2: calc(var(--spacing) * 1); /* 8px */
+  --spacing-3: calc(var(--spacing) * 1.5); /* 12px */
+  --spacing-4: calc(var(--spacing) * 2); /* 16px */
+  --spacing-5: calc(var(--spacing) * 2.5); /* 20px */
+  --spacing-6: calc(var(--spacing) * 3); /* 24px */
+  --spacing-8: calc(var(--spacing) * 4); /* 32px */
+  --spacing-10: calc(var(--spacing) * 5); /* 40px */
+  --spacing-12: calc(var(--spacing) * 6); /* 48px */
+  --spacing-16: calc(var(--spacing) * 8); /* 64px */
+  --spacing-20: calc(var(--spacing) * 10); /* 80px */
+  --spacing-24: calc(var(--spacing) * 12); /* 96px */
+  --spacing-32: calc(var(--spacing) * 16); /* 128px */
+  --spacing-40: calc(var(--spacing) * 20); /* 160px */
+  --spacing-44: calc(var(--spacing) * 22);
+  --spacing-48: calc(var(--spacing) * 24); /* 192px */
+  --spacing-56: calc(var(--spacing) * 28); /* 224px */
+  --spacing-64: calc(var(--spacing) * 32); /* 256px */
+  --spacing-72: calc(var(--spacing) * 36); /* 288px */
+  --spacing-80: calc(var(--spacing) * 40);
+}
+
+@layer base {
+  :root {
+    background: var(--color-background);
+    foreground: var(--color-foreground);
+    danger: var(--color-danger);
+    success: var(--color-success);
+    warning: var(--color-warning);
+    pillgrey: var(--color-pillGrey);
+    darkgrey: var(--color-darkGrey);
+  }
+}
+
+main {
+  @media (width < 60rem) {
+    @apply overflow-x-hidden;
+  }
+}
+
+/* textarea {
+  @apply text-lg;
+  @apply border-2;
+  @apply border-foreground
+  @apply rounded-md;
+} */
+
+[data-slot="error-message"] {
+  @apply text-danger;
+  @apply font-medium;
+}
