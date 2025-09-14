@@ -29,6 +29,8 @@ const PromptForm = () => {
     })
   })
 
+  console.log('status', status)
+
   const submitHandler = async (data: FormValues) => {
     console.log("Submitted prompt:", data.prompt);
     reset();
@@ -53,7 +55,7 @@ const PromptForm = () => {
             label="Prompt input"
             showCounter
             maxLengthHint={5000}
-            disabled={isSubmitting}
+            disabled={isSubmitting || status !== 'ready'}
             // Call form submit manually when ChatTextarea submits
             onSubmit={async () => {
               await handleSubmit(submitHandler)();
