@@ -1,15 +1,20 @@
-"use client";
-import { useChat } from "@ai-sdk/react";
-import { DefaultChatTransport } from 'ai';
+import { UIMessage } from 'ai';
 
-const MessageContainer = () => {
-  const { messages } = useChat({
-    transport: new DefaultChatTransport({
-      api: '/api/roast'
-    })
-  });
+type MessageContainerProps = {
+  messages: UIMessage[]
+}
+
+const MessageContainer: React.FC<MessageContainerProps> = ({ messages }) => {
   console.log('messages', messages)
-  return <section className="relative space-y-6 mx-auto overflow-y-auto"></section>;
+  return (
+    <section className="relative space-y-6 mx-auto overflow-y-auto"></section>
+  )
 };
 
 export default MessageContainer;
+
+export const Message = () => {
+  return (
+    <div></div>
+  )
+}
