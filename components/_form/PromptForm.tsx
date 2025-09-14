@@ -5,6 +5,8 @@ import { InputSchema } from "@/lib/schema";
 import { ChatTextarea } from "@/components/_inputs/TextInput";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
+import Footer from '@/components/_general/Footer'
+import MessageContainer from '@/components/_chat/Messages'
 
 type FormValues = {
   prompt: string;
@@ -23,7 +25,7 @@ const PromptForm = () => {
     resolver: zodResolver(InputSchema),
   });
 
-  const { status, error } = useChat({
+  const { status, error, sendMessage, messages } = useChat({
     transport: new DefaultChatTransport({
       api: "/api/roast",
     }),
@@ -34,52 +36,48 @@ const PromptForm = () => {
 
   console.log('error', error)
   console.log("status", status);
+  console.log('form message', messages)
 
   const submitHandler = async (data: FormValues) => {
     console.log("Submitted prompt:", data.prompt);
-    if (data?.prompt.trim()) {
-      await fetch("/api/roast", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data), // stringify here (once)
-      });
-    }
+    await sendMessage({text: data.prompt})
     reset();
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(submitHandler)}
-      className="relative mx-auto flex w-full max-w-2xl items-end gap-6"
-    >
-      <Controller
-        name="prompt"
-        control={control}
-        render={({ field }) => (
-          <ChatTextarea
-            value={field.value}
-            onChange={field.onChange}
-            placeholder="Roast my idea…"
-            submitOnEnter
-            maxHeight={260}
-            minRows={1}
-            label="Prompt input"
-            showCounter
-            maxLengthHint={5000}
-            disabled={isSubmitting || status !== "ready"}
-            // Call form submit manually when ChatTextarea submits
-            onSubmit={async () => {
-              await handleSubmit(submitHandler)();
-            }}
+    <>
+      <MessageContainer messages={messages} />
+      <Footer>
+        <form
+          onSubmit={handleSubmit(submitHandler)}
+          className="relative mx-auto flex w-full max-w-2xl items-end gap-6"
+        >
+          <Controller
+            name="prompt"
+            control={control}
+            render={({ field }) => (
+              <ChatTextarea
+                value={field.value}
+                onChange={field.onChange}
+                placeholder="Roast my idea…"
+                submitOnEnter
+                maxHeight={260}
+                minRows={1}
+                label="Prompt input"
+                showCounter
+                maxLengthHint={5000}
+                disabled={isSubmitting || status !== "ready"}
+                // Call form submit manually when ChatTextarea submits
+                onSubmit={async () => {
+                  await handleSubmit(submitHandler)();
+                }}
+                error={errors?.prompt?.message as string}
+              />
+            )}
           />
-        )}
-      />
-      {errors?.prompt && (
-        <p className="absolute -bottom-12 left-0 text-sm text-red-600">
-          {String(errors.prompt.message)}
-        </p>
-      )}
-    </form>
+        </form>
+      </Footer>
+    </>
   );
 };
 
