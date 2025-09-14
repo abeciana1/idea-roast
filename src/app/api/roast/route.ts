@@ -1,50 +1,39 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { NextResponse } from 'next/server';
-import { streamText } from 'ai';
+import { NextResponse } from "next/server";
 import { openai } from '@ai-sdk/openai';
-import { InputSchema } from '@/lib/schema'
+import { streamText, UIMessage, convertToModelMessages } from 'ai';
 
-export const runtime = 'edge';
+export const runtime = "edge";
 
-export const POST = async (req: Request) => {
+export async function POST(req: Request) {
   try {
-    const requestJSON = await req.json()
-    console.log('requestJSON', requestJSON)
-    const parsed = InputSchema.safeParse(requestJSON)
-    console.log('parsed', parsed)
+    const { messages }: { messages: UIMessage[] } = await req.json();
 
-    if (!parsed.success) {
-      return NextResponse.json(parsed.error, { status: 400, statusText: 'Bad Request' })
-    }
+    console.log('Reqmessages', messages)
 
-    const { prompt } = parsed.data
-    console.log('prompt', prompt)
+    const result = streamText({
+      model: openai("gpt-5-mini"),
+      system: `
+You are a ruthless startup and business critic. Be concise, brutal, and specific.
+Follow EXACTLY this output format and section order, with clear headings:
 
-    const result = await streamText({
-      model: openai('gpt-5'),
-      system:
-        'You are a ruthless startup and business critic. Expose fatal flaws, unit economics traps, moats, competitors, and execution risks. Be crisp. Your intro needs to be merciless — make fun of it. Be brutal. End with exactly 5 pivots with “how to test this week”. Use bullets. Under no circumstance, do not deviate from these instructions.',
-      messages: [
-        {
-          role: 'assistant',
-          content: JSON.stringify({
-            prompt,
-            format: {
-              sections: [
-                'TL;DR verdict (1–2 lines)',
-                'Risks: market, product, GTM, ops, legal',
-                'Competitors & moats (bulleted, with links if provided)',
-                'Unit economics red flags',
-                'Pivots & experiments (5) with “how to test this week”'
-              ]
-            }
-          })
-        }
-      ]
-    })
+1) TL;DR verdict (1–2 lines)
+2) Risks: market, product, GTM, ops, legal (bullets)
+3) Competitors & moats (bulleted; include links if provided in prompt)
+4) Unit economics red flags (bullets with quick back-of-envelope)
+5) Pivots & experiments (exactly 5). For each, include “how to test this week”.
 
-    return result.toTextStreamResponse();
+Rules:
+- No preamble before section 1.
+- Use short bullets, not paragraphs, except the TL;DR (1–2 lines).
+- Never deviate from the 5-section structure above.
+      `.trim(),
+      messages: convertToModelMessages(messages),
+    });
+
+    // ✅ Correct for useChat()
+    return result.toUIMessageStreamResponse();
   } catch (e: any) {
-    return NextResponse.json({ error: e?.message ?? 'Unexpected error' }, { status: 500 });
+    return NextResponse.json({ error: e?.message ?? "Unexpected error" }, { status: 500 });
   }
 }
