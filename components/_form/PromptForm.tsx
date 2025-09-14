@@ -67,7 +67,6 @@ const PromptForm = () => {
                 showCounter
                 maxLengthHint={5000}
                 disabled={isSubmitting || status !== "ready"}
-                // Call form submit manually when ChatTextarea submits
                 onSubmit={async () => {
                   await handleSubmit(submitHandler)();
                 }}
