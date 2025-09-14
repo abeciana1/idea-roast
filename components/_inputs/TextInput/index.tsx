@@ -55,6 +55,7 @@ export type ChatTextareaProps = {
   textareaClassName?: string;
   /** Auto focus on mount */
   autoFocus?: boolean;
+  error: string;
 };
 
 export type ChatTextareaHandle = {
@@ -84,6 +85,7 @@ export const ChatTextarea = forwardRef<ChatTextareaHandle, ChatTextareaProps>(
       className = "",
       textareaClassName = "",
       autoFocus = false,
+      error
     },
     ref
   ) {
@@ -199,9 +201,13 @@ export const ChatTextarea = forwardRef<ChatTextareaHandle, ChatTextareaProps>(
             Send
           </button>
         </div>
-
+        {error && (
+          <p className="absolute left-0 text-sm text-red-600 justify-self-start">
+            {String(error)}
+          </p>
+        )}
         {showCounter && (
-          <div className="mt-1 text-right text-xs text-gray-500">
+          <div className="absolute right-0 text-right text-xs text-gray-500 justify-self-end">
             {currentValue.length}
             {maxLengthHint ? ` / ${maxLengthHint}` : ""}
           </div>
