@@ -23,18 +23,27 @@ const PromptForm = () => {
     resolver: zodResolver(InputSchema),
   });
 
-  const { sendMessage, status } = useChat({
+  const { sendMessage, status, error } = useChat({
     transport: new DefaultChatTransport({
       api: "/api/roast",
     }),
+    onError: error => {
+      console.error('Error streaming text:', error);
+    },
   });
 
+  console.log('error', error)
   console.log("status", status);
 
   const submitHandler = async (data: FormValues) => {
     console.log("Submitted prompt:", data.prompt);
     if (data?.prompt.trim()) {
-      await sendMessage({ text: data.prompt });
+      // await sendMessage({ text: JSON.stringify({ prompt: data.prompt }) });
+      await fetch("/api/roast", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data), // stringify here (once)
+      });
     }
     reset();
   };
