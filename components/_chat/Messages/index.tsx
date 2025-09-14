@@ -1,7 +1,8 @@
+'use client'
 
 const MessageContainer = () => {
   return (
-    <section className="spacy-y-6">
+    <section className="space-y-6">
 
     </section>
   )
