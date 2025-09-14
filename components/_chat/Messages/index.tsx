@@ -1,11 +1,10 @@
-'use client'
+"use client";
+import { useChat } from "@ai-sdk/react";
 
 const MessageContainer = () => {
-  return (
-    <section className="space-y-6">
+  const { messages } = useChat();
+  console.log('messages', messages)
+  return <section className="space-y-6"></section>;
+};
 
-    </section>
-  )
-}
-
-export default MessageContainer
+export default MessageContainer;
