@@ -3,6 +3,8 @@ import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { InputSchema } from "@/lib/schema";
 import { ChatTextarea } from "@/components/_inputs/TextInput";
+import { useChat } from '@ai-sdk/react';
+import { DefaultChatTransport } from 'ai';
 
 type FormValues = {
   prompt: string;
@@ -20,6 +22,12 @@ const PromptForm = () => {
     },
     resolver: zodResolver(InputSchema),
   });
+
+  const { sendMessage, status } = useChat({
+    transport: new DefaultChatTransport({
+      api: '/api/roast'
+    })
+  })
 
   const submitHandler = async (data: FormValues) => {
     console.log("Submitted prompt:", data.prompt);
