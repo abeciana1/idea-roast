@@ -3,8 +3,8 @@ import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { InputSchema } from "@/lib/schema";
 import { ChatTextarea } from "@/components/_inputs/TextInput";
-import { useChat } from '@ai-sdk/react';
-import { DefaultChatTransport } from 'ai';
+import { useChat } from "@ai-sdk/react";
+import { DefaultChatTransport } from "ai";
 
 type FormValues = {
   prompt: string;
@@ -25,14 +25,17 @@ const PromptForm = () => {
 
   const { sendMessage, status } = useChat({
     transport: new DefaultChatTransport({
-      api: '/api/roast'
-    })
-  })
+      api: "/api/roast",
+    }),
+  });
 
-  console.log('status', status)
+  console.log("status", status);
 
   const submitHandler = async (data: FormValues) => {
     console.log("Submitted prompt:", data.prompt);
+    if (data?.prompt.trim()) {
+      await sendMessage({ text: data.prompt });
+    }
     reset();
   };
 
@@ -55,7 +58,7 @@ const PromptForm = () => {
             label="Prompt input"
             showCounter
             maxLengthHint={5000}
-            disabled={isSubmitting || status !== 'ready'}
+            disabled={isSubmitting || status !== "ready"}
             // Call form submit manually when ChatTextarea submits
             onSubmit={async () => {
               await handleSubmit(submitHandler)();
