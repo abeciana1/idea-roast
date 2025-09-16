@@ -20,7 +20,7 @@ type MessageProps = {
 const MessageContainer: React.FC<MessageContainerProps> = ({ messages }) => {
   console.log('messages', messages)
   return (
-    <section className="relative space-y-6 mx-auto overflow-y-auto grid grid-cols-1 justify-items-stretch">
+    <section className="relative w-full max-w-[1000px] space-y-6 mx-auto overflow-y-auto grid grid-cols-1 justify-items-stretch">
       {messages.map((message, index) => (
         <Message key={index} role={message.role as RoleType} parts={message.parts as PartsType[]} />
       ))}
@@ -35,17 +35,23 @@ export const Message: React.FC<MessageProps> = ({
   parts
 }) => {
   return (
-    <div>
+    <div className=''>
       <div
         className={clsx('text-lg px-3 py-1', {
-          ['justify-self-start bg-darkGrey text-foreground']: role === 'assistant',
+          ['justify-self-start bg-pillGrey border-2 border-foreground text-foreground border-radius']: role === 'assistant',
           ['justify-self-end bg-foreground text-background']: role === 'user',
         })}
-      >{parts?.map((part) => {
-        if (part.type === 'text') {
-          return part.text
-        }
-      })}</div>
+      >
+        {parts?.map((part, index) => {
+          if (part.type === 'text' && role === 'user') {
+            return part.text
+          } else if (part.type === 'text' && role === 'assistant') {
+            return (
+              <span key={index} dangerouslySetInnerHTML={{ __html: part.text }} />
+            )
+          }
+        })}
+      </div>
       <div
         className='flex items-center justify-between text-sm text-darkGrey mt-1'
       >
