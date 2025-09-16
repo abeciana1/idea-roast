@@ -35,15 +35,23 @@ export const Message: React.FC<MessageProps> = ({
   parts
 }) => {
   return (
-    <div
-      className={clsx('text-lg px-3 py-1', {
-        ['justify-self-start bg-darkGrey text-foreground']: role === 'assistant',
-        ['justify-self-end bg-foreground text-background']: role === 'user',
-      })}
-    >{parts?.map((part) => {
-      if (part.type === 'text') {
-        return part.text
-      }
-    })}</div>
+    <div>
+      <div
+        className={clsx('text-lg px-3 py-1', {
+          ['justify-self-start bg-darkGrey text-foreground']: role === 'assistant',
+          ['justify-self-end bg-foreground text-background']: role === 'user',
+        })}
+      >{parts?.map((part) => {
+        if (part.type === 'text') {
+          return part.text
+        }
+      })}</div>
+      <div
+        className='flex items-center justify-between text-sm text-darkGrey'
+      >
+        <div>{ role }</div>
+        <div></div>
+      </div>
+    </div>
   )
 }
