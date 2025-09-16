@@ -47,7 +47,7 @@ export const Message: React.FC<MessageProps> = ({
         }
       })}</div>
       <div
-        className='flex items-center justify-between text-sm text-darkGrey'
+        className='flex items-center justify-between text-sm text-darkGrey mt-1'
       >
         <div>{ role }</div>
         <div></div>
