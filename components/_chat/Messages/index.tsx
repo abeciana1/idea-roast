@@ -61,7 +61,7 @@ export default MessageContainer;
 export const Message: React.FC<MessageProps> = ({ role, parts }) => {
   return (
     <div className="rounded-xl border border-gray-200 p-3 bg-white">
-      <div className={clsx("text-lg px-1 py-0.5")}>
+      <div className={clsx("text-lg")}>
         {parts?.map((part, index) => {
           // USER: render plain text as-is
           if (part.type === "text" && role === "user") {
