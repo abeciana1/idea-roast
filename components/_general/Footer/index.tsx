@@ -1,4 +1,3 @@
-import type { Wrapper } from '@/types/general'
 import Link from 'next/link'
 
 const Footer: React.FC = () => {
