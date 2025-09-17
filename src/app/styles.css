@@ -102,5 +102,5 @@ p {
 }
 
 ul {
-  @apply list-outside list-disc;
+  @apply list-inside list-disc;
 }
