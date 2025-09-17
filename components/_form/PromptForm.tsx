@@ -5,7 +5,6 @@ import { InputSchema } from "@/lib/schema";
 import { ChatTextarea } from "@/components/_inputs/TextInput";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
-import Footer from '@/components/_general/Footer'
 import MessageContainer from '@/components/_chat/Messages'
 
 type FormValues = {
@@ -34,12 +33,7 @@ const PromptForm = () => {
     },
   });
 
-  console.log('error', error)
-  console.log("status", status);
-  console.log('form message', messages)
-
   const submitHandler = async (data: FormValues) => {
-    console.log("Submitted prompt:", data.prompt);
     reset();
     await sendMessage({text: data.prompt})
   };
