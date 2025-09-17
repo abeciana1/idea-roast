@@ -25,7 +25,7 @@ const PromptForm = () => {
     resolver: zodResolver(InputSchema),
   });
 
-  const { status, error, sendMessage, messages } = useChat({
+  const { messages, status, error, sendMessage } = useChat({
     transport: new DefaultChatTransport({
       api: "/api/roast",
     }),
@@ -46,7 +46,7 @@ const PromptForm = () => {
 
   return (
     <>
-      <MessageContainer messages={messages} />
+      <MessageContainer status={status} messages={messages} />
       <Footer>
         <form
           onSubmit={handleSubmit(submitHandler)}
