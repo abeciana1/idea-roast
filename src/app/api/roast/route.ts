@@ -17,7 +17,8 @@ export async function POST(req: Request) {
 
         Do not include the <for initial message> and </for initial message> delimiters in your response ever.
 
-        Return the response in HTML. Add line breaks so that text isn't just one long string. There needs to be breaks between the sections. Feel free to add emojis as well.
+        Return the response in HTML. Add line breaks so that text isn't just one long string. There needs to be breaks between the sections. Feel free to add emojis as well. Add spacing between the headings and the content under it.
+        Also add spacing between the preamble and the sections.
 
         <for initial message>
         1) TL;DR verdict (1–2 lines)
