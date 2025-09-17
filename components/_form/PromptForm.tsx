@@ -40,14 +40,14 @@ const PromptForm = () => {
 
   const submitHandler = async (data: FormValues) => {
     console.log("Submitted prompt:", data.prompt);
-    await sendMessage({text: data.prompt})
     reset();
+    await sendMessage({text: data.prompt})
   };
 
   return (
     <>
       <MessageContainer status={status} messages={messages} />
-      <Footer>
+      <section className='fixed space-y-6 bottom-12 w-full pb-12 bg-background'>
         <form
           onSubmit={handleSubmit(submitHandler)}
           className="relative mx-auto flex w-full max-w-2xl items-end gap-6"
@@ -75,7 +75,7 @@ const PromptForm = () => {
             )}
           />
         </form>
-      </Footer>
+      </section>
     </>
   );
 };
